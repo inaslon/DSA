@@ -1,41 +1,11 @@
 
 
-class DSU {
-
-public:
-    vector<int> parent, sz;
-    DSU(int n) {
-        parent.resize(n);
-        sz.assign(n, 1);
-        iota(parent.begin(), parent.end(), 0);
-    }
-
-    int find(int x) {
-        if (parent[x] == x)
-            return x;
-        return parent[x] = find(parent[x]);
-    }
-
-    void unite(int a, int b) {
-        a = find(a);
-        b = find(b);
-
-        if (a == b)
-            return;
-
-        if (sz[a] < sz[b])
-            swap(a, b);
-
-        parent[b] = a;
-        sz[a] += sz[b];
-    }
-};
-
 class Solution {
 
 public:
     bool hasValidPath(vector<vector<int>>& grid) {
-        vector<pair<int, int>> dir{{0, 1}, {1, 0}};
+        vector<pair<int, int>> dir{
+            {0, 1}, {1, 0}, {-1, 0}, {0, -1}}; // right down
         unordered_map<int, unordered_set<int>> mp;
 
         mp[1] = {0, 1}; // left, right
@@ -47,38 +17,64 @@ public:
 
         int m = grid.size();
         int n = grid[0].size();
+        queue<pair<int, int>> q;
+        vector<vector<bool>> vis(m, vector<bool>(n, false));
+        q.push({0, 0});
 
-        DSU dsu(m * n);
+        vis[0][0] = true;
+        while (!q.empty()) {
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                int cell1 = i * n + j;
+            auto [i, j] = q.front();
+            q.pop();
 
-                for (auto d : dir) {
-                    int ni = i + d.first;
-                    int nj = j + d.second;
-                    if (ni >= m || nj >= n)
-                        continue;
-                    int cell2 = ni * n + nj;
+            if (i == m - 1 && j == n - 1) {
+                return true;
+            }
 
-                    int val1 = grid[i][j];
-                    int val2 = grid[ni][nj];
-                    if (d.first == 0 && d.second == 1) {
-                        if (mp[val1].contains(1) && mp[val2].contains(0)) {
-                            dsu.unite(cell1, cell2);
-                        }
-                    } else {
-                        if (d.first == 1 && d.second == 0) {
-                            if (mp[val1].contains(3)  && mp[val2].contains(2)) {
-                                dsu.unite(cell1, cell2);
-                            }
+            for (auto d : dir) {
+                int ni = i + d.first;
+                int nj = j + d.second;
+                if (ni < 0 || nj < 0 || ni >= m || nj >= n)
+                    continue;
+                if (vis[ni][nj])
+                    continue;
+
+                int val1 = grid[i][j];
+                int val2 = grid[ni][nj];
+                if (d.first == 0 && d.second == 1) {
+                    if (mp[val1].count(1) > 0 && mp[val2].count(0) > 0) {
+                        vis[ni][nj] = true;
+                        q.push({ni, nj});
+                    }
+                }
+
+                else if (d.first == 0 && d.second == -1) { //
+                    if (mp[val1].count(0) > 0 && mp[val2].count(1) > 0) {
+                        vis[ni][nj] = true;
+                        q.push({ni, nj});
+                    }
+
+                }
+
+                else if (d.first == -1 && d.second == 0) { //
+                    if (mp[val1].count(2) > 0 && mp[val2].count(3) > 0) {
+                        vis[ni][nj] = true;
+                        q.push({ni, nj});
+                    }
+
+                }
+
+                else {
+                    if (d.first == 1 && d.second == 0) {
+                        if (mp[val1].count(3) > 0 && mp[val2].count(2) > 0) {
+                            vis[ni][nj] = true;
+                            q.push({ni, nj});
                         }
                     }
                 }
             }
         }
-        
 
-        return dsu.find(0) == dsu.find(m*n-1);
-        }
-    };
+        return false;
+    }
+};
