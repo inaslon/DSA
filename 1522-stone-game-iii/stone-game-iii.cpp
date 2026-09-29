@@ -1,31 +1,28 @@
 class Solution {
     int n;
     vector<int> piles;
-    int dp[50005][2];
-  
-    int solve(int idx, int turn) {
+    int dp[50005];
+
+    int solve(int idx) {
 
         if (idx >= n) {
             return 0;
         }
-        if (dp[idx][turn] !=-1) {
-            return dp[idx][turn];
+        if (dp[idx] != -1) {
+            return dp[idx];
         }
-    
-        int ans = turn ? -1e9 : 1e9;
+
+        int ans = -1e9;
         int stones = 0;
 
         for (int i = 1; i <= 3 && i + idx <= n; i++) {
 
             stones += piles[idx + i - 1];
-            if (turn) {
-                ans = max(solve(idx + i, turn ^ 1) + stones, ans);
-            } else {
-                ans = min(solve(idx + i, turn ^ 1) - stones, ans);
-            }
+
+            ans = max(-solve(idx + i) + stones, ans);
         }
 
-        return dp[idx][turn] = ans;
+        return dp[idx] = ans;
     }
 
 public:
@@ -33,8 +30,8 @@ public:
         n = stoneValue.size();
         piles = stoneValue;
         memset(dp, -1, sizeof(dp));
-       
-        int ans = solve(0, 1);
+
+        int ans = solve(0);
 
         if (ans == 0) {
             return "Tie";
