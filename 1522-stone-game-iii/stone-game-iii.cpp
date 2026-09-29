@@ -2,16 +2,16 @@ class Solution {
     int n;
     vector<int> piles;
     int dp[50005][2];
-    bool vis[50005][2];
+  
     int solve(int idx, int turn) {
 
         if (idx >= n) {
             return 0;
         }
-        if (vis[idx][turn]) {
+        if (dp[idx][turn] !=-1) {
             return dp[idx][turn];
         }
-        vis[idx][turn] = true;
+    
         int ans = turn ? -1e9 : 1e9;
         int stones = 0;
 
@@ -32,8 +32,8 @@ public:
     string stoneGameIII(vector<int>& stoneValue) {
         n = stoneValue.size();
         piles = stoneValue;
-        memset(dp, 0, sizeof(dp));
-        memset(vis,false,sizeof(vis));
+        memset(dp, -1, sizeof(dp));
+       
         int ans = solve(0, 1);
 
         if (ans == 0) {
