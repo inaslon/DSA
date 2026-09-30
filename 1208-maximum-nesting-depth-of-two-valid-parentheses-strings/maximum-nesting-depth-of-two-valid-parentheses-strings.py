@@ -3,7 +3,7 @@ class Solution:
         n = len(seq)
         a = [0]*n
         cnt = 0
-
+ 
         for i in range(n):
             if seq[i] == '(':
                 cnt = cnt + 1
