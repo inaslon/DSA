@@ -12,20 +12,19 @@ public:
         k1 = (k1 - 1) / 2;
 
         int i = 0, j = 0;
-        int cnt = 0;
 
-        while (i < m || j < n) {
+        for (int cnt = 0; cnt <= k2; cnt++) {
             int temp;
-            if (i == m) {
-                temp = nums2[j++];
-            } else if (j == n) {
-                temp = nums1[i++];
-            } else if (nums1[i] < nums2[j]) {
-                temp = nums1[i++];
-            } else {
-                temp = nums2[j++];
-            }
 
+            int a = (i < m ? nums1[i] : INT_MAX);
+            int b = (j < n ? nums2[j] : INT_MAX);
+            if (a < b) {
+                temp = a;
+                i++;
+            } else {
+                temp = b;
+                j++;
+            }
             if (cnt == k1) {
                 x = temp;
             }
@@ -33,7 +32,7 @@ public:
                 y = temp;
             }
 
-            cnt++;
+          
         }
 
         return (x + y) / 2;
