@@ -19,9 +19,9 @@ public:
     int minimumEffort(vector<vector<int>>& tasks) {
 
         sort(tasks.begin(), tasks.end(), [](auto& a, auto& b) {
-            if (a[1] - a[0] == b[1] - b[0]) {
-                return a[0] > b[0];
-            }
+            // if (a[1] - a[0] == b[1] - b[0]) {
+            //     return a[0] > b[0];
+            // }
             return a[1] - a[0] > b[1] - b[0];
         });
         int ans;
