@@ -5,21 +5,19 @@ public:
         int open = 0;
         int close = 0;
         int ans = 0;
-        stack<char> st;
+
         for (auto ch : s) {
             if (ch == '(') {
-                st.push('(');
+                open++;
             } else {
-              if(!st.empty()){
-                st.pop();
-              }
-              else{
-                close++;
-              }
-                           }
-
+                if (open > 0) {
+                    open--;
+                } else {
+                    close++;
+                }
+            }
         }
 
-        return st.size()+close;
+        return open + close;
     }
 };
