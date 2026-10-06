@@ -3,14 +3,12 @@ class Solution {
     int target;
     vector<int> nums;
     int dp[1004];
-    int vis[1004];
     int solve(int idx) {
         if (idx == n - 1)
             return 0;
-        if (vis[idx]) {
+        if (dp[idx] != -2) {
             return dp[idx];
         }
-        vis[idx] = 1;
         int ans = -1;
 
         for (int i = idx + 1; i < n; i++) {
@@ -32,8 +30,7 @@ public:
         n = nums.size();
         this->target = target;
         this->nums = nums;
-        memset(dp, 0, sizeof(dp));
-        memset(vis,0,sizeof(vis));
+        fill(dp, dp + n, -2);
         return solve(0);
     }
 };
