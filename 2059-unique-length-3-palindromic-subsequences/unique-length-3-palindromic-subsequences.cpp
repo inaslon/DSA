@@ -28,7 +28,7 @@ public:
             int r = last[a];
             if (l == -1 || r == -1 || l == r)
                 continue;
-            set<int> st;
+            unordered_set<int> st;
             for (int i = l + 1; i < r; i++) {
                 st.insert(s[i] - 'a');
             }
