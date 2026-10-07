@@ -28,12 +28,17 @@ public:
             int r = last[a];
             if (l == -1 || r == -1 || l == r)
                 continue;
-            unordered_set<int> st;
+            vector<bool> vis(26, false);
             for (int i = l + 1; i < r; i++) {
-                st.insert(s[i] - 'a');
+
+                vis[s[i] - 'a'] = true;
             }
 
-            ans += st.size();
+            for (int i = 0; i < 26; i++) {
+                if (vis[i]) {
+                    ans++;
+                }
+            }
         }
 
         return ans;
