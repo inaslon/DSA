@@ -2,7 +2,7 @@ class Solution {
 public:
     int minOperations(vector<int>& nums) {
 
-        sort(nums.begin(), nums.end());
+      
         vector<int> arr;
         set<int> st(nums.begin(), nums.end());
 
