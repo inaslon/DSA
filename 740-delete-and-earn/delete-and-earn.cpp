@@ -17,16 +17,12 @@ class Solution {
 
 public:
     int deleteAndEarn(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        unordered_map<int, int> mp;
-        for (int num : nums) {
-            mp[num]++;
-        };
+        
 
         vector<int> newarr(10001, 0);
-        for (int i = 1; i <= 10000; i++) {
-            newarr[i] = mp[i] * i;
-        }
+      for(int num:nums){
+        newarr[num] += num;
+      }
 
         a = newarr;
         memset(dp, -1, sizeof(dp));
