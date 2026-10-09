@@ -40,7 +40,24 @@ public:
         a = arr;
         n = a.size();
 
-        memset(vis, false, sizeof(vis));
-        return solve(0, false, false);
+        // memset(vis, false, sizeof(vis));
+        // return solve(0, false, false);
+
+        int ans = arr[0];
+        int curr = arr[0];
+        int skipped = 0;
+        for (int i = 1; i < n; i++) {
+          int temp = curr;
+
+          curr = max(arr[i],curr+arr[i]);
+
+          skipped = max(temp,arr[i]+skipped);
+
+
+            ans = max({ans,curr,skipped});
+        }
+
+
+        return ans;
     }
 };
