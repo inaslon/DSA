@@ -1,7 +1,7 @@
 class Solution {
-    int n = 10001;
-    vector<int> a;
-    int dp[10005];
+    int n;
+    vector<int> a, dp;
+
     int solve(int idx) {
         if (idx >= n)
             return 0;
@@ -9,23 +9,22 @@ class Solution {
             return dp[idx];
         }
         int skip = solve(idx + 1);
-
-        int take = a[idx] + solve(idx + 2);
+        int next =
+            upper_bound(a.begin() + idx, a.end(), a[idx] + 1) - a.begin();
+        int ni = upper_bound(a.begin() + idx, a.end(), a[idx]) - a.begin();
+        int freq = ni - idx;
+         int take = a[idx] * freq + solve(next);
 
         return dp[idx] = max(take, skip);
     }
 
 public:
     int deleteAndEarn(vector<int>& nums) {
-        
 
-        vector<int> newarr(10001, 0);
-      for(int num:nums){
-        newarr[num] += num;
-      }
-
-        a = newarr;
-        memset(dp, -1, sizeof(dp));
-        return solve(1);
+        sort(nums.begin(), nums.end());
+        a = nums;
+        n = a.size();
+        dp.assign(n, -1);
+        return solve(0);
     }
 };
