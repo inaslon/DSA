@@ -1,5 +1,5 @@
 class Solution {
-    using p = pair<int, int>;
+    using t = tuple<int, int, int>;
     struct D {
         int dr, dc;
     };
@@ -11,57 +11,36 @@ public:
 
         int n = grid.size();
 
-        auto bfs = [&](int t) {
-            queue<p> q;
-            vector<vector<bool>> vis(n, vector<bool>(n, false));
-            if (grid[0][0] > t)
-                return false;
+        priority_queue<t, vector<t>, greater<t>> pq;
+        vector<vector<int>> time(n, vector<int>(n, 1e9));
 
-                
-            q.push({0, 0});
-            vis[0][0] = true;
+        pq.push({grid[0][0], 0, 0});
+        time[0][0] = grid[0][0];
 
-            while (!q.empty()) {
-                auto [r, c] = q.front();
-                q.pop();
+        int maxh = -1;
+        while (!pq.empty()) {
+            auto [t, r, c] = pq.top();
+            pq.pop();
 
-                if (r == n - 1 && c == n - 1)
-                    return true;
+            if (r == n - 1 && c == n - 1)
+                return t;
 
-                for (auto d : dir) {
-                    int nr = r + d.dr;
-                    int nc = c + d.dc;
+            for (auto d : dir) {
+                int nr = r + d.dr;
+                int nc = c + d.dc;
 
-                    if (nr < 0 || nc < 0 || nc >= n || nr >= n ||
-                        grid[nr][nc] > t) {
-                        continue;
-                    }
-
-                    if (!vis[nr][nc]) {
-                        q.push({nr, nc});
-                        vis[nr][nc] = true;
-                    }
+                if (nr < 0 || nc < 0 || nc >= n || nr >= n) {
+                    continue;
                 }
-            }
-            return false;
-        };
 
-        int low = 0;
-        int high = 1e9;
-        int ans;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            if (bfs(mid)) {
-                ans = mid;
-                high = mid - 1;
-
-            } else {
-
-                low = mid + 1;
+                int nt = max(t, grid[nr][nc]);
+                if (time[nr][nc] > nt) {
+                    pq.push({nt, nr, nc});
+                    time[nr][nc] = nt;
+                }
             }
         }
 
-        return ans;
+        return 0;
     }
 };
