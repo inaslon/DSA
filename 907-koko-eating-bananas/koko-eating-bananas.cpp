@@ -5,8 +5,8 @@ class Solution {
        long long cnt = 0;
        for(int num:arr){
         
-        
-        cnt += (mid+num-1)/mid;
+        double x = double(num)/double(mid);
+        cnt += ceil(x);
 
        }
 
