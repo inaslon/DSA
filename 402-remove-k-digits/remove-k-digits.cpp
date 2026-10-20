@@ -4,7 +4,7 @@ public:
 
         string st;
         int n = num.size();
-        if(n == k){
+        if (n == k) {
             return "0";
         }
 
@@ -15,19 +15,15 @@ public:
                 k--;
             }
 
-            st.push_back(num[i]);
+            if (st.length() > 0 || num[i] != '0') {
+
+                st.push_back(num[i]);
+            }
         }
 
-        while(k--){
+        while (!st.empty() && k--) {
             st.pop_back();
         }
-
-        int i = 0;
-        while (i < st.size() && st[i] == '0') {
-            i++;
-        }
-
-        st = st.substr(i);
 
         return st.empty() ? "0" : st;
     }
