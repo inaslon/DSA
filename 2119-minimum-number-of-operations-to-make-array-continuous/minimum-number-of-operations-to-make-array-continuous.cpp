@@ -2,28 +2,20 @@ class Solution {
 public:
     int minOperations(vector<int>& nums) {
 
-      
-        vector<int> arr;
-        set<int> st(nums.begin(), nums.end());
-
-        for (auto it : st) {
-            arr.push_back(it);
-        }
-
-        int ans = INT_MAX;
         int n = nums.size();
-        for (int i = 0; i < arr.size(); i++) {
+        sort(nums.begin(),nums.end());
+        nums.erase(unique(nums.begin(), nums.end()), nums.end());
+        int m = nums.size();
+        int maxconsecutive = 0;
 
-            int min_ele = arr[i];
-
-            int max_ele = arr[i] + n - 1;
-
-            int idx =
-                upper_bound(arr.begin() + i, arr.end(), max_ele) - arr.begin();
-
-            ans = min(ans, n - (idx - i));
+        int l = 0;
+        for (int r = 0; r < m; r++) {
+            while (nums[r] - nums[l] >= n) {
+                l++;
+            }
+            maxconsecutive = max(maxconsecutive, r - l + 1);
         }
 
-        return ans;
+        return n - maxconsecutive;
     }
 };
