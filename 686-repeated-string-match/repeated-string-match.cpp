@@ -1,35 +1,46 @@
+
 class Solution {
-    bool issubstr(int mid, string &a, string &b) {
-        bool ans = true;
-        string s;
-        for (int i = 0; i < mid; i++)
-            s += a;
-        if (s.find(b) == string::npos) {
-            ans = false;
-        }
-
-        return ans;
-    }
-
 public:
     int repeatedStringMatch(string a, string b) {
+        int n = a.length();
+        int m = b.length();
 
-        int low = 1;
-        int high = (b.length()+a.length() - 1)/a.length() + 1;
+        int k = (m + n - 1) / n;
 
-        int ans = -1;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
+        string s;
+        for (int i = 0; i < k + 1; i++) {
+            s += a;
+        }
 
-            if (issubstr(mid,a,b)){
-                ans  = mid;
-                high = mid-1;
-            }
-            else{
-                low = mid+1;
+        long long mod = 1000000007;
+        long long p = 31;
+
+        long long target = 0;
+        long long hash = 0;
+        long long power = 1;
+
+        for (int i = 0; i < m; i++) {
+            target = (target * p + (b[i] - 'a' + 1)) % mod;
+            hash = (hash * p + (s[i] - 'a' + 1)) % mod;
+
+            if (i < m - 1) {
+                power = (power * p) % mod;
             }
         }
 
-        return ans;
+        for (int i = 0; i + m <= (int)s.length(); i++) {
+            if (hash == target) {
+                if (s.substr(i, m) == b) {
+                    return (i + m + n - 1) / n;
+                }
+            }
+
+            if (i + m < (int)s.length()) {
+                hash = (hash - ((s[i] - 'a' + 1) * power) % mod + mod) % mod;
+                hash = (hash * p + (s[i + m] - 'a' + 1)) % mod;
+            }
+        }
+
+        return -1;
     }
 };
