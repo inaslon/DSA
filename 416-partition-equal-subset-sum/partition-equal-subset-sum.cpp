@@ -3,28 +3,30 @@ class Solution {
     int n;
     vector<int> nums;
 
-    int sum ;
+    int sum;
 
     vector<vector<int>> dp;
 
-    bool solve(int idx, int diff) {
+    bool solve(int idx, int target) {
+        if (target < 0)
+            return false;
         if (idx == n) {
-            return diff == 0;
+            return target == 0;
         }
 
-        if (dp[idx][diff+sum] != -1)
-            return dp[idx][diff+sum];
+        if (dp[idx][target] != -1)
+            return dp[idx][target];
 
-        bool s1 = solve(idx + 1, diff + nums[idx]);
-        bool s2 = solve(idx + 1, diff - nums[idx]);
+        bool take = solve(idx + 1, target - nums[idx]);
+        bool skip = solve(idx + 1, target);
 
-        return dp[idx][diff+sum] = s1 || s2;
+        return dp[idx][target] = take || skip;
     }
 
 public:
     bool canPartition(vector<int>& nums) {
 
-    sum = accumulate(nums.begin(), nums.end(), 0);
+        sum = accumulate(nums.begin(), nums.end(), 0);
 
         if (sum % 2 != 0)
             return 0;
@@ -32,7 +34,7 @@ public:
 
         this->nums = nums;
 
-        dp.assign(n + 1, vector<int>(2*sum+1, -1));
-        return solve(0, 0);
+        dp.assign(n + 1, vector<int>(sum / 2 + 1, -1));
+        return solve(0, sum / 2);
     }
 };
