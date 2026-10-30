@@ -5,11 +5,13 @@ public:
         int n = nums.size();
         vector<int> st;
 
+        int kk = n - k;
+
         for (int i = 0; i < n; i++) {
 
-            while (!st.empty() && st.back() > nums[i] &&
-                   (int)st.size() - 1 + (n - i) >= k) {
+            while (!st.empty() && st.back() > nums[i] && kk > 0) {
                 st.pop_back();
+                kk--;
             }
 
             st.push_back(nums[i]);
