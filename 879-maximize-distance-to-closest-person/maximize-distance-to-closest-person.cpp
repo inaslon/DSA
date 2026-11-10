@@ -2,41 +2,24 @@ class Solution {
 public:
     int maxDistToClosest(vector<int>& seats) {
 
-        set<int> st;
-        int n = seats.size();
+         int n = seats.size();
+    int prev = -1;
+    int ans = 0;
 
-        for(int i = 0;i<n;i++){
-            if(seats[i]!= 0 ){
-                st.insert(i);
+    for(int i = 0;i<n;i++){
+        if(seats[i] == 1){
+            if(prev == -1){
+                ans = i;
             }
-        }
-
-        int ans = 0;
-
-        for(int i = 0;i<n;i++){
-            if(seats[i] == 0){
-
-                auto it = st.lower_bound(i);
-
-                int left = INT_MAX;
-                int right = INT_MAX;
-
-                if(it != st.end()){
-
-                    right = *it-i;
-                }
-
-                if(it != st.begin()){
-                    --it;
-                    left = i- *it;
-                }
-
-                int dis = min(left,right);
-                ans = max(ans,dis);
+            else{
+                ans = max(ans,(i-prev)/2);
             }
-        }
 
-        return ans;
+            prev = i;
+        }
+    }
+ans = max(ans,n-1-prev);
+    return ans;
         
     }
 };
